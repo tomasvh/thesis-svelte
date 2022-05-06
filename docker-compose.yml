@@ -1,0 +1,16 @@
+services:
+  app:
+    build:
+      context: .
+    volumes:
+      - .:/application
+    ports:
+      - 5050:5050
+    image: app:svelte
+    container_name: svelte-container
+    command: npm start
+    deploy:
+      resources:
+        limits:
+          cpus: 1.0
+          memory: 1024M
