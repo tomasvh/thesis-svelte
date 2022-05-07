@@ -1,4 +1,4 @@
-FROM node:17-alpine AS builder
+FROM node:17-alpine AS svelte-builder
 
 WORKDIR /app
 
@@ -12,6 +12,6 @@ WORKDIR /usr/share/nginx/html
 
 RUN rm -rf ./*
 
-COPY --from=builder /app/public .
+COPY --from=svelte-builder /app/public .
 
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
