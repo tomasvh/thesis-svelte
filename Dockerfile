@@ -1,17 +1,17 @@
-FROM node:17-alpine
+FROM node:17-alpine AS builder
 
-WORKDIR /application
-
-COPY package.json ./
-
-RUN npm install
+WORKDIR /app
 
 COPY . .
 
-RUN npm run build && npm prune --production
+RUN npm install && npm run build
 
-ENV PORT 5050
+FROM nginx:alpine
 
-EXPOSE 5050
+WORKDIR /usr/share/nginx/html
 
-CMD ["node", "build"]
+RUN rm -rf ./*
+
+COPY --from=builder /app/public .
+
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
